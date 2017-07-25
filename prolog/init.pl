@@ -110,21 +110,77 @@ onBoard(C, R) :-
     R >= 1,
     R =< 8.
 
-/* white pawn */
+/* pawn */
 isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
-    pawn(PIECE),                /* piece is a pawn */
+    pawn(PIECE),                
     white(PIECE),
     RTARGET is RSOURCE + 1,
     CTARGET is CSOURCE.
 
 isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
-    pawn(PIECE),                /* piece is a pawn */
+    pawn(PIECE),                
     black(PIECE),
     RTARGET is RSOURCE - 1,
     CTARGET is CSOURCE.
 
+/* rook */
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    rook(PIECE),
+    CSOURCE = CTARGET.
 
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    rook(PIECE),
+    RSOURCE = RTARGET.
 
+/* knight */
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    knight(PIECE),
+    CTARGET is CSOURCE + 1,
+    RTARGET is RSOURCE + 2.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    knight(PIECE),
+    CTARGET is CSOURCE - 1,
+    RTARGET is RSOURCE + 2.
+   
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    knight(PIECE),
+    CTARGET is CSOURCE + 1,
+    RTARGET is RSOURCE - 2.   
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    knight(PIECE),
+    CTARGET is CSOURCE - 1,
+    RTARGET is RSOURCE - 2.
+
+/* bishop */
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    bishop(PIECE),
+    abs(CTARGET - CSOURCE) == abs(RTARGET - RSOURCE).
+
+/* queen */
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    queen(PIECE),
+    abs(CTARGET - CSOURCE) == abs(RTARGET - RSOURCE).
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    queen(PIECE),
+    CSOURCE = CTARGET.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    queen(PIECE),
+    RSOURCE = RTARGET.
+
+/* king */
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    king(PIECE),
+    abs(CTARGET - CSOURCE) == 1.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    king(PIECE),
+    abs(RTARGET - RSOURCE) == 1.
+
+/* todo: en passant */
 
 isValidMove(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
     isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET), 
