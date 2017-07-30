@@ -1,6 +1,39 @@
 
 
 /* define pieces */
+wr1.
+wn1.
+wb1.
+wq.
+wk.
+wb2.
+wn2.
+wr2.
+wp1.
+wp2.
+wp3.
+wp4.
+wp5.
+wp6.
+wp7.
+wp8.
+br1.
+bn1.
+bb1.
+bq.
+bk.
+bb2.
+bn2.
+br2.
+bp1.
+bp2.
+bp3.
+bp4.
+bp5.
+bp6.
+bp7.
+bp8.
+
 /* piece(wr1).
 piece(wn1).
 piece(wb1).
@@ -52,6 +85,8 @@ bishop(wb2).
 queen(wq).
 king(wk).
 
+pawn(bp1).
+
 white(wp1).
 white(wp2).
 white(wp3).
@@ -69,7 +104,7 @@ white(wb2).
 white(wq).
 white(wk).
 
-black(wp1).
+black(bp1).
 
 /* define weights */
 weight(wn1, 3).
@@ -126,11 +161,13 @@ isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
 /* rook */
 isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
     rook(PIECE),
-    CSOURCE = CTARGET.
+    CTARGET is CSOURCE,
+    isInRange(RTARGET, 1, 8).
 
 isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
     rook(PIECE),
-    RSOURCE = RTARGET.
+    RSOURCE = RTARGET,
+    isInRange(CTARGET, 1, 8).
 
 /* knight */
 isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
@@ -156,7 +193,27 @@ isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
 /* bishop */
 isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
     bishop(PIECE),
-    abs(CTARGET - CSOURCE) == abs(RTARGET - RSOURCE).
+    isInRange(DIAG, 1, 8),
+    CTARGET is CSOURCE + DIAG,
+    RTARGET is RSOURCE + DIAG.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    bishop(PIECE),
+    isInRange(DIAG, 1, 8),
+    CTARGET is CSOURCE + DIAG,
+    RTARGET is RSOURCE - DIAG.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    bishop(PIECE),
+    isInRange(DIAG, 1, 8),
+    CTARGET is CSOURCE - DIAG,
+    RTARGET is RSOURCE - DIAG.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    bishop(PIECE),
+    isInRange(DIAG, 1, 8),
+    CTARGET is CSOURCE - DIAG,
+    RTARGET is RSOURCE + DIAG.
 
 /* queen */
 isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
@@ -174,14 +231,57 @@ isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
 /* king */
 isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
     king(PIECE),
-    abs(CTARGET - CSOURCE) == 1.
+    CTARGET is CSOURCE + 1,
+    RTARGET is RSOURCE.
 
 isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
     king(PIECE),
-    abs(RTARGET - RSOURCE) == 1.
+    CTARGET is CSOURCE - 1,
+    RTARGET is RSOURCE.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    king(PIECE),
+    RTARGET is RSOURCE + 1,
+    CTARGET is CSOURCE.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    king(PIECE),
+    RTARGET is RSOURCE - 1,
+    CTARGET is CSOURCE.
+    
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    king(PIECE),
+    CTARGET is CSOURCE + 1,
+    RTARGET is RSOURCE + 1.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    king(PIECE),
+    CTARGET is CSOURCE + 1,
+    RTARGET is RSOURCE - 1.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    king(PIECE),
+    CTARGET is CSOURCE - 1,
+    RTARGET is RSOURCE - 1.
+
+isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
+    king(PIECE),
+    CTARGET is CSOURCE - 1,
+    RTARGET is RSOURCE + 1.
+    
 
 /* todo: en passant */
 
+isInRange(Low, Low, High).
+isInRange(Out, Low, High) :-
+    NextLow is Low + 1,
+    NextLow =< High,
+    isInRange(Out, NextLow, High).
+
+onBoard(CTARGET, RTARGET) :-
+    isInRange(CTARGET, 1, 8),
+    isInRange(RTARGET, 1, 8).
+    
 isValidMove(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET) :-
-    isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET), 
+    isValidForPiece(PIECE, CSOURCE, RSOURCE, CTARGET, RTARGET),
     onBoard(CTARGET, RTARGET).
