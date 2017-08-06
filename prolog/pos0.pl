@@ -31,3 +31,7 @@ pos(bp5,5,7).
 pos(bp6,6,7).
 pos(bp7,7,7).
 pos(bp8,8,7).
+
+/* test pieces */
+piece(test1).
+/*pos(test1, 1, 3).*/

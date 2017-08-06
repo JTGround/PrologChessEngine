@@ -13,9 +13,25 @@ isValidForPiece(PIECE, CTARGET, RTARGET) :-
 
 isValidForPiece(PIECE, CTARGET, RTARGET) :-
     pawn(PIECE),                
+    white(PIECE),
+    pos(PIECE, CSOURCE, RSOURCE),
+    RSOURCE == 2,
+    RTARGET is RSOURCE + 2,
+    CTARGET is CSOURCE.
+
+isValidForPiece(PIECE, CTARGET, RTARGET) :-
+    pawn(PIECE),                
     black(PIECE),
     pos(PIECE, CSOURCE, RSOURCE),
     RTARGET is RSOURCE - 1,
+    CTARGET is CSOURCE.
+
+isValidForPiece(PIECE, CTARGET, RTARGET) :-
+    pawn(PIECE),                
+    black(PIECE),
+    pos(PIECE, CSOURCE, RSOURCE),
+    RSOURCE == 7,
+    RTARGET is RSOURCE - 2,
     CTARGET is CSOURCE.
 
 /* rook */
